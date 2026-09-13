@@ -80,7 +80,7 @@ Arreglo: `edades = [15, 18, 20, 23, 27, 31, 35, 40]` - Buscar valor `31`
 
 Se realizaron 6 comparaciones para dar el con el valor que se buscaba.
 
-**2. Búsqueda binaria
+**2. Búsqueda binaria**
 
 | Paso | low | high | mid | edades[mid] | resultado |
 |---|---|---|---|---|---|
@@ -88,3 +88,81 @@ Se realizaron 6 comparaciones para dar el con el valor que se buscaba.
 | 2 | 4 | 7 | 5 | 31 | Valor encontrado | 
 
 Se realizaron 2 comparaciones para dar el con el valor que se buscaba.
+
+**3.** La búsqueda binaria solo funciona si el arreglo está ordenado porque en cada paso decide hacía donde ir buscando, es decir, izquierda o derecha, y en cada paso compara el valor que se esta buscando con el elemento  del medio. Esto solo es válido si sabemos que todo lo que está antes es menor y todo lo que esta después es mayor, y viceversa.
+
+**4.** Con un millón de elementos creo que seguiría usando la **búsqueda binaria** porque  con un millón de elementos solo necesitaría aproximadamente 20 comparaciones a diferencia de la líneal donde tendría que revisar en el peor de los casos la totalidad de elementos llegando a revisar el millón de elementos.
+
+### 2.4 Insertar un elemento
+
+`edades = [15, 18, 20, 23, 27]` un arreglo de 5 casillas
+
+**1.** En el escenario donde tenemos un espacio disponible, es muy barato insertar un nuevo valor ya que simplemente colocamos el valor en la siguiente casilla libre. Sin embargo, en el escenario donde no tenemos espacio disponible tendríamos que crear un arreglo más grande y copiar todos los elementos existentes al nuevo arreglo antes de agregar el nuevo valor.
+
+**2.** Insertar el valor `21` en la mitad requiere desplazar una posición a la derecha todos los elementos que quedan posterior del punto de inserción.
+
+**3.** Comparación Big O
+
+| Caso | Complejidad |
+|---|---|
+|Insertar al final, con espacio| O(1) |
+|Insertar al final, sin espacio (crear nuevo arreglo) | O(n) |
+|Insertar en la mitad (desplazando elementos) | O(n) |
+
+---
+
+## Parte 3 — Arreglos 2D
+ 
+### 3.1 Diseña la matriz
+ 
+**1. Matriz `salon` (3 filas × 4 columnas):**
+ 
+|            | col 0 | col 1 | col 2 | col 3 |
+|---|---|---|---|---|
+| **fila 0** | [0][0] | [0][1] | [0][2] | [0][3] |
+| **fila 1** | [1][0] | [1][1] | [1][2] | [1][3] |
+| **fila 2** | [2][0] | [2][1] | [2][2] | [2][3] |
+ 
+**2.** Pseudocódigo para acceder a fila 2, columna 3:
+ 
+```
+salon[2][3]
+```
+ 
+**3.** Total de casillas: **3 × 4 = 12**. En general, el total de casillas de una matriz se calcula como `filas × columnas`.
+ 
+### 3.2 De 2D a memoria (row-major)
+ 
+**1.** Aplanado en memoria (fila por fila, row-major), las 12 casillas quedan en este orden:
+ 
+```
+[0][0] [0][1] [0][2] [0][3] [1][0] [1][1] [1][2] [1][3] [2][0] [2][1] [2][2] [2][3]
+  pos0   pos1   pos2   pos3   pos4   pos5   pos6   pos7   pos8   pos9  pos10  pos11
+```
+ 
+**2.** Fórmula: `dirección = base + ((fila × número_de_columnas + columna) × tamaño)`, con base = 0x1000, columnas = 4, tamaño = 4 bytes.
+ 
+- `[1][2]`: posición aplanada = (1 × 4 + 2) = 6 → 6 × 4 = 24 bytes → 0x1000 + 24 = **0x1018**
+**3.**
+- `[0][0]`: posición = (0 × 4 + 0) = 0 → 0x1000 + 0 = **0x1000**
+- `[2][3]`: posición = (2 × 4 + 3) = 11 → 11 × 4 = 44 bytes → 0x1000 + 44 = **0x102C**
+
+### 3.3 Recorrido con ciclos anidados
+ 
+**1.** Pseudocódigo:
+ 
+```
+contador = 0
+para fila desde 0 hasta f-1:
+    para columna desde 0 hasta c-1:
+        si salon[fila][columna] == 1:
+            contador = contador + 1
+```
+ 
+**2.** La complejidad es **O(f × c)**. Por cada una de las `f` filas se recorren las `c` columnas, así que el ciclo interno se ejecuta `c` veces por cada una de las `f` iteraciones del ciclo externo, dando un total de `f × c` casillas visitadas.
+ 
+**3.** Si `f` y `c` se duplican ambos a la vez, el trabajo total se multiplica por **4** (2 × 2), ya que el tiempo depende del producto f × c, no de f o c por separado.
+
+### 3.4 Conectando todo
+
+Según en lo que he podido entender, Big O es una herramienta que nos permite predecir cómo va a crecer el tiempo de un algoritmo antes de pensar en ejecutarlo con n cantidad de datos, esto es algo que necesitamos para decidir cómo estructurar y recorrer daatos. Un arreglo 1D nos da acceso O(1) a cualquier posición por índice gracias al calculo aritmético de memoria base, por otro lado, un arreglo 2D, al necesitar dos índices, los cuales serían fila y columna, sigue siendo O(1) para acceder a una casilla puntual, pero recorrerlo completo cuesta O(f x c) porque hay que revisar  cada combinación de fila y columna. Comprender Big O nos ayuda a anticipar como escalará una solución y saber que estrategia de búsqueda utilizar.
