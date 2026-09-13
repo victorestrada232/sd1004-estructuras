@@ -1,5 +1,5 @@
 # Taller - Complejidad algorítmica y Arreglos (Respuestas)
-**SD1004 · Estructura de Datos ** - Institución Universitaria Pascual Bravo
+**SD1004 · Estructura de Datos** - Institución Universitaria Pascual Bravo
 Docente: Juan Duque · Semestre 2026-II
 Estudiante: Víctor Manuel Estrada
 
@@ -37,3 +37,54 @@ Estudiante: Víctor Manuel Estrada
  **b. Verdadero** > Es verdadero porque Big O describe la tasa de crecimiento del tiempo de ejecución a medida que crece el tamaño de la entrada. no un número x de segundos concreto que depende del hardware y otros.
 
  **c. Falso** > Es falso porque acceder a `arreglo[5]` es O(1). y es así porque los arreglos permiten acceso directo a las posiciones. y su posición en memoria se calcula con base + índice * tamaño, por lo que no hay necesidad de recorrer los elementos anteriores.
+
+## Parte 2 - Arreglos 1D
+
+### 2.1 Diseñar arreglo
+
+** 1. Arreglo `notas` de 6 casillas:**
+
+| índice | 0 | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|---|
+| Valor | 3.5 | 4.2 | 2.8 | 5.0 | 3.9 | 4.5 |
+
+**2.** La tercera nota ingresada tiene como índice 2, con valor 2.8
+
+**3.** Pseudo código
+ultima_nota = notas[logitud(notas) - 1] 
+
+### 2.2 Direcciones en memoria
+
+Usando la formula: `direccion = base + (índice * tamaño)` teniendo como base `0x2000` y un tamaño de `4 bytes` las ubicaciones dan en:
+
+- `notas[0]` = 0x2000 + (0 * 4) = **0x2000**
+- `notas[3]` = 0x2000 + (3 * 4) = 0x2000 + 12 = **0x200C**
+- `notas[5]` = 0x2000 + (5 * 4) = 0x2000 + 20 = **0x2014**
+
+**2.** Acceder a `notas[3]` tiene la misma velocidad que acceder a `notas[0]` porque ambos escenarios el computador calcula la dirección con una multiplicación y una suma; no tiene que recorrer el arreglo completo de inicio a fin. ya que el calculo toma el mismo número de operaciones sin importar el índice.
+
+### 2.3 Búsqueda lineal vs binaria
+
+Arreglo: `edades = [15, 18, 20, 23, 27, 31, 35, 40]` - Buscar valor `31`
+
+**1. Búsqueda lineal**
+
+| Paso | Indice revisado | valor | ¿Es 31? |
+|---|---|---|---|
+| 1 | 0 | 15 | No |
+| 2 | 1 | 18 | No |
+| 3 | 2 | 20 | No |
+| 4 | 3 | 23 | No |
+| 5 | 4 | 27 | No |
+| 6 | 5 | 31 | Sí |
+
+Se realizaron 6 comparaciones para dar el con el valor que se buscaba.
+
+**2. Búsqueda binaria
+
+| Paso | low | high | mid | edades[mid] | resultado |
+|---|---|---|---|---|---|
+| 1 | 0 | 7 | 3 | 23 | 23 < 31 -> buscar a la derecha, low = 4 |
+| 2 | 4 | 7 | 5 | 31 | Valor encontrado | 
+
+Se realizaron 2 comparaciones para dar el con el valor que se buscaba.
